@@ -1,0 +1,91 @@
+.sidebar {
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #131A35;
+    box-sizing: border-box;
+}
+.sidebar .logo {
+    margin-top: 16px;
+    margin-bottom: 20px;
+    width: 68px;
+    height: auto;
+}
+.sidebar-main {
+    flex: 1;
+    width: 100%;
+}
+.sidebar-item {
+    padding: 8px 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    border: 1px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    color: #8F929A;
+    box-sizing: border-box;
+}
+.sidebar-item .name {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+}
+.sidebar-item-active {
+    border: 1px solid #fff;
+    color: #FFF;
+
+}
+.sidebar-item-logo {
+    margin-right: 10px;
+}
+.sidebar-footer {
+    justify-content: space-between;
+    width: 100%;
+    height: 69px;
+    display: flex;
+}
+.sidebar-footer > a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border: 1px solid #8F929A;
+    color: #8F929A;
+    text-align: center;
+    border-radius: 50%;
+}
+.sidebar-footer > a:hover {
+    border: 1px solid #fff;
+    background: #ff0000;
+    color: #fff;
+}
+a {
+    text-decoration: none;
+}
+
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px) {
+    .sidebar-footer {
+        justify-content: space-between;
+        width: 70%;
+        height: 69px;
+        display: flex;
+        margin-bottom: 150px;
+    }
+    .sidebar-footer > a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+  }
+}

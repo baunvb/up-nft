@@ -1,0 +1,22 @@
+.home {
+    margin: 24px auto;
+    width: 80%;
+    
+}
+.home-grid {
+    justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+}
+.home-grid > div {
+    margin-top: 24px;
+    width: 49%;
+}
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    .home-grid > div {
+        width: 100%;
+    }
+}

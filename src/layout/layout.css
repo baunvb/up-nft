@@ -1,0 +1,56 @@
+.layout {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+.layout-sidebar {
+    width: 280px;
+    height: 100vh;
+    z-index: 1;
+    overflow-y: auto;
+}
+.layout-content {
+    box-sizing: border-box;
+    padding-bottom: 50px;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    background: url('../assets/images/background_web.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    overflow-y: auto;
+}
+.layout-sibar-icon-menu {
+    color: #fff;
+    position: absolute;
+    z-index: 2;
+    left: 24px;
+    top: 24px;
+    display: none;
+}
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px){
+    .layout-content {
+    }
+    .layout-sidebar {
+        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+    }
+    .layout-sibar-icon-menu {
+        display: block;
+    }
+    .layout-sidebar-mobile {
+        display: block;
+    }
+}
+
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) {
+    .layout-content {
+    }
+}
