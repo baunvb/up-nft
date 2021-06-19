@@ -10,6 +10,7 @@ const Home: React.FC<{}> = () => {
 
     return (
         <div className="home">
+            <span className="home-title">NFT Market Place</span>
             <NftList/>
         </div>
     )

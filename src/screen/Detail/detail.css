@@ -18,13 +18,13 @@
     text-align: center;
     background: transparent;
     color: #FFFFFF;
-    margin-top: 20px;
+    margin: 20px 0;
     cursor: pointer;
 }
 .detail-model {
-    width: 324px;
+    width: 80%;
     text-align: center;
-    height: 358px;
+    height: auto;
 }
 .detail-model > img {
     width: auto;
@@ -38,7 +38,7 @@
 .detail-btn-buy {
     box-sizing: border-box;
     border-radius: 10px;
-    width: 260px;
+    width: 100%;
     height: 55px;
     font-weight: 600;
     font-size: 18px;
@@ -47,3 +47,127 @@
     text-align: center;
     color: #FFFFFF;
 }
+.detail {
+    width: 80%;
+    padding: 24px;
+}
+.detail-content{
+    width: 100%;
+    display: flex;
+}
+.detail-left {
+    flex: 1;
+    text-align: left;
+}
+.detail-center {
+    flex: 1 1;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    margin: 0 20px;
+    justify-content: center;
+    align-items: center;
+}
+.detail-right {
+    flex: 1;
+}
+.detail-title {
+    font-weight: 600;
+    margin-bottom: 20px;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
+    color: #FFFFFF;
+    display: block;
+    width: 100%;
+}
+.detail-label {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    color: #8F929A;
+    display: block;
+    margin: 8px 0;
+}
+.detail-text {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    color: #FFFFFF;
+    display: block;
+    margin-bottom: 16px;
+}
+.detail-text-large {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+}
+.detail-right > div {
+    border: 1px solid #8F929A;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 16px;
+}
+.detail-highlight-label {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #DAC08F;
+}
+.detail-your-balance {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: right;
+    color: #8F929A;
+}
+.detail-amount {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: #FFFFFF;
+}
+.detail-right > div > span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.detail-right > div > span:first-child {
+    margin-bottom: 20px;
+}
+.detail-dialog-tx-header {
+    display: block;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.detail-dialog-tx-address {
+    cursor: pointer;
+    display: block;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+}
+.detail-dialog-tx-address > span {
+    margin-left: 6px;
+}
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 768px){
+    .detail-content{
+        flex-direction: column;
+    }
+    .detail-btn-view {
+        width: 100%;
+    }
+    .detail-center {
+        margin: 0;
+    }
+    .detail-model {
+        width: 100%;
+    }
+  }

@@ -25,13 +25,13 @@ export const Routers: Array<route> = [
         icon: <HouseFill size={SIZE} />
     },
     {
-        path: "/detail/:address",
+        path: "/detail",
         name: "Detail",
         component: Detail,
         icon: <HouseFill size={SIZE} />
     },
     {
-        path: "/view/:address",
+        path: "/view",
         name: "View VR",
         component: ViewVr,
         icon: <HouseFill size={SIZE} />

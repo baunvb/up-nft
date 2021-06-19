@@ -1,16 +1,17 @@
 import Web3 from 'web3'
 import { Abis } from '../abis/Abis'
-import { PROVIDER } from "../utils/Constants"
-const web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER))
+import { getSelectedAddress, initWeb3 } from '../data/api/Api'
+import { PROVIDER, ROPSTEN_PROVIDER } from "../utils/Constants"
+const web3 = initWeb3()
 
-const Constract_address = {
-    IRON: "0x7b65b489fe53fce1f6548db886c08ad73111ddd8",
-    STEEL: "0x9001eE054F1692feF3A48330cB543b6FEc6287eb"
+const CONTRACTS_ADDRESS = {
+    BNB: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+    UP_NFT: "0xc57898e22b632047a3a7041eb77fc7c74ff24957"
 }
 
-const Constracts = {
-    IRON: new web3.eth.Contract(Abis.IronAbi, Constract_address.IRON),
-    STEEL: new web3.eth.Contract(Abis.SteelAbi, Constract_address.STEEL),
+const Contracts = {
+    BNB: new new Web3(new Web3.providers.HttpProvider(PROVIDER)).eth.Contract(Abis.BnbAbi, CONTRACTS_ADDRESS.BNB),
+    UP_NFT: new web3.eth.Contract(Abis.NFTAbi, CONTRACTS_ADDRESS.UP_NFT),
 }
 
-export default Constracts;
+export default Contracts;

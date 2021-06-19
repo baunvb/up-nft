@@ -12,6 +12,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Logo from "../../assets/images/logo.png"
 import { Github, Twitter, Discord, Telegram } from 'react-bootstrap-icons';
 import { FaTelegram, FaMediumM, FaDiscord } from 'react-icons/fa';
+import { disconnectMetaMaskWallet } from '../../data/api/Api'
+import { BASE_BSCSCAN_URL } from '../../utils/Constants'
 
 export default function Header() {
     const dispatch = useDispatch();
@@ -37,12 +39,12 @@ export default function Header() {
                     <div className="header-detail-account">
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <span>Connected</span>
-                            <button className="header-btn-change btn-active"
+                            {/* <button className="header-btn-change btn-active"
                                 onClick={() => {
                                     setOpen(true)
                                     setOpenAccount(false)
                                 }}
-                            >Change</button>
+                            >Change</button> */}
                         </div>
                         <span className="header-wallet-address">{formatShortWalletAddress(ConnectWalletState.myWalletAddress)}</span>
                         <div className="header-wallet-copy">
@@ -60,27 +62,33 @@ export default function Header() {
                             </span>
                             </Tooltip>
 
-                            <a className="header-wallet-icon-action" href={"https://etherscan.io/address/" + ConnectWalletState.myWalletAddress} target="_blank">
+                            <a className="header-wallet-icon-action" href={BASE_BSCSCAN_URL + "address/" + ConnectWalletState.myWalletAddress} target="_blank">
                                 <span className="header-wallet-icon-action"><FaExternalLinkAlt /></span>
-                                View on Etherscan
+                                View on BSCscan
                             </a>
                         </div>
+                        {/* <button className="header-btn-disconnect"
+                            onClick={() => {
+                                setOpen(false)
+                                setOpenAccount(false)
+                            }}
+                        >Disconnect</button> */}
                     </div>
                 </DialogComponent>
             }
             <NavLink className="header-left" to={"/"}>
-                <img src={Logo} alt=""/>
+                <img src={Logo} alt="" />
                 <span className="header-page-title">
-                    <span>UPFI</span>
+                    <span>HEROFI</span>
                     <span>Network</span>
                 </span>
             </NavLink>
             <div className="header-center">
-                <a href="/" target="_blank" className="header-social"><FaMediumM/></a>
-                <a href="/" target="_blank" className="header-social"><Twitter/></a>
-                <a href="/" target="_blank" className="header-social"><FaDiscord/></a>
-                <a href="/" target="_blank" className="header-social"><Telegram/></a>
-                <a href="/" target="_blank" className="header-social"><Github/></a>
+                <a href="/" target="_blank" className="header-social"><FaMediumM /></a>
+                <a href="/" target="_blank" className="header-social"><Twitter /></a>
+                <a href="/" target="_blank" className="header-social"><FaDiscord /></a>
+                <a href="/" target="_blank" className="header-social"><Telegram /></a>
+                <a href="/" target="_blank" className="header-social"><Github /></a>
 
             </div>
             <div className="header-right">

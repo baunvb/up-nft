@@ -1,38 +1,154 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from "react-dom";
+import { Transaction } from "ethereumjs-tx"
 import "./detail.css"
 import * as THREE from "three";
 import { NavLink } from 'react-router-dom'
 import { Nft } from '../../utils/Type';
+import Web3 from 'web3'
+import { getSelectedAddress, initWeb3 } from '../../data/api/Api';
+import { AbiItem } from 'web3-utils';
+import Contracts from '../../contracts/Contracts';
+import { formatCurrency, getDetailCategory, _artIdToCategoryId, unit256ToNumber, getNftData, mintArtByCategoryId, formatShortWalletAddress } from '../../utils/Util';
+import { nthArg } from 'lodash';
+import Loading from '../../component/loading/Loading';
+import { FaExternalLinkAlt } from 'react-icons/fa';
+import DialogComponent from '../../component/dialog/Dialog';
+import { BASE_BSCSCAN_URL } from '../../utils/Constants';
 
+declare const window: any;
 
-const Detail: React.FC<Nft> = (DetailProps) => {
+const Detail: React.FC<Nft> = () => {
+    const [nft, setNft] = useState<Nft>(null)
+    const [isLoading, setLoading] = useState(true)
+    const [isTxLoading, setTxLoading] = useState(false)
+    const [dialog, setDialog] = useState(null)
+    const [mintingResult, setMintingResult] = useState({ isSuccess: Boolean, message: String })
+    const [balance, setBalance] = useState(0);
+    const { search } = window.location;
+    const params = new URLSearchParams(search);
+    const categoryId = params.get("id")
+    useEffect(() => {
+        const fetchData = async () => {
+            let value = unit256ToNumber(await Contracts.BNB.methods.balanceOf(getSelectedAddress()).call())
+            setBalance(value)
+            setNft(await getNftData(categoryId))
+            setLoading(false)
+        }
+        fetchData()
+    }, [])
+
+    function handleErr(err: any) {
+
+        setDialog(
+            <DialogComponent
+                open={true}
+                onClose={() => setDialog(null)}
+            >
+                <div>
+                    <span className="detail-dialog-tx-header">Transaction was not completed</span>
+                    <span className="detail-dialog-tx-address">{err.message}</span>
+                </div>
+            </DialogComponent>
+        )
+    }
+
+    function handleComplete(tx: string) {
+        setDialog(<DialogComponent
+            open={true}
+            onClose={() => setDialog(null)}
+        >
+            <div>
+                <span className="detail-dialog-tx-header">Transaction was submitted</span>
+                <a href={BASE_BSCSCAN_URL + "tx/" + tx} target="_blank" className="detail-dialog-tx-address">{formatShortWalletAddress("0x07c1a334a4740186cfe2fde4e773e2c42279f8da450c15453a64b064c7c7f7a9")}
+                    <span>
+                        <FaExternalLinkAlt />
+                    </span>
+
+                </a>
+            </div>
+        </DialogComponent>)
+    }
+
+    async function requestBuyNft() {
+        setTxLoading(true)
+        var tx = await mintArtByCategoryId(categoryId, { gas: 3000000, value: nft?.price.toString() || "0" }, (err: any, tx: string) => {
+            setTxLoading(false)
+
+            if (!err) {
+                console.log("Minting COMPLETE:", tx)
+                handleComplete(tx)
+            } else {
+                console.log("Minting err:", err)
+                handleErr(err)
+                //                 code: 4001
+                // message: "MetaMask Tx Signature: User denied transaction signature."
+                // stack: "Error: MetaMask Tx Signature: User denied transaction signature."
+            }
+        });
+    }
+
+    if (isLoading) {
+        return <div style={{ width: "100%", height: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Loading />
+        </div>
+    }
+
     return (
-        <div>
-            <span>{DetailProps.title}</span>
-            <span>Price: {DetailProps.price} UPS</span>
-            <div style={{
-                display: "flex",
-                flexDirection: "column",
-                width: "50%",
-                height: "auto",
-                alignItems: "center",
-                margin: "auto"
-            }}>
-                <div className="detail-model">
-                    <img src="https://i.pinimg.com/originals/93/c2/ad/93c2adc4af76251f20d615ce146b1f33.jpg" />
+        <div className="detail">
+            {dialog}
+            {
+                isTxLoading ?
+                    <div style={{ position: "absolute", top: "50%", left: "50%" }}>
+                        <Loading />
+                    </div>
+                    : null
+            }
+            <span className="detail-title">{nft?.name}</span>
+
+            <div className="detail-content">
+                <div className="detail-left">
+                    <span className="detail-label">Description</span>
+                    <span className="detail-text ">{nft?.description}</span>
+                    <span className="detail-label">Price</span>
+                    <span className="detail-text detail-text-large">{`${formatCurrency(nft?.price)} BNB`}</span>
+                    <span className="detail-label">Release date</span>
+                    <span className="detail-text detail-text-large">{nft?.date}</span>
+                    <span className="detail-label">AR viewing instructinos</span>
+                    <span className="detail-text ">{`This poster includes optional Augmented Reality features. Using a phone or tablet, you can experience this poster as it comes to life, including animation and sound.`}</span>
                 </div>
 
-                <NavLink
-                    to={"/view/address"}
-                >
-                    <button className="detail-btn-view">VIEW EXPERIENCE</button>
-                </NavLink>
+                <div className="detail-center">
+                    <div className="detail-model">
+                        <img src={nft?.image} />
+                    </div>
+                    <NavLink
+                        to={"/view?id=" + categoryId}
+                    >
+                        <button className="detail-btn-view">VIEW EXPERIENCE</button>
+                    </NavLink>
+                </div>
+                <div className="detail-right">
+                    <div>
+                        <span>
+                            <span className="detail-highlight-label">Amount</span>
+                            <span className="detail-your-balance">Your balance: {balance} BNB</span>
+                        </span>
+                        <span>
+                            <span className="detail-amount">1</span>
+                            <span className="detail-your-balance">Avaiable: {nft ? nft?.max - nft?.amount : 0} NFT</span>
 
-                <button className="detail-btn-buy btn-active">
-                    BUY
-               </button>
+                        </span>
+                    </div>
+                    <button type="button" className="detail-btn-buy btn-active"
+                        onClick={() => requestBuyNft()}
+                    >
+                        Purchase the NFT
+                    </button>
+                </div>
             </div>
+
+
         </div>
     );
 }

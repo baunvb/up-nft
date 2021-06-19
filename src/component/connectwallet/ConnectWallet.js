@@ -29,7 +29,6 @@ function ItemConnecWallet(props) {
 
 export default function ConnectWallet(props) {
     const [selectedWallet, setSelectedWallet] = useState(undefined);
-
     const network = clusterApiUrl('devnet');
     const [providerUrl, setProviderUrl] = useState('https://www.sollet.io');
     const connection = useMemo(() => new Connection(network), [network]);
@@ -41,54 +40,38 @@ export default function ConnectWallet(props) {
     const dispatch = useDispatch();
     const ConnectWalletState = useSelector(state => state.WalletReducer)
     //metamask 
-    // const connectMetaMask = () => {
-    //     if (ConnectWalletState.isWalletConnecting) return
-    //     const isMetaMaskInstalled = () => {
-    //         const { ethereum } = window;
-    //         return Boolean(ethereum && ethereum.isMetaMask);
-    //     };
+    const connectMetaMask = () => {
+        if (ConnectWalletState.isWalletConnecting) return
+        const isMetaMaskInstalled = () => {
+            const { ethereum } = window;
+            return Boolean(ethereum && ethereum.isMetaMask);
+        };
 
-    //     const connect = () => {
-    //         const { ethereum } = window;
-    //         dispatch(connectWallet(ethereum))
-    //     };
+        const connect = () => {
+            const { ethereum } = window;
+            dispatch(connectWallet(ethereum))
+        };
 
-    //     const MetaMaskClientCheck = () => {
-    //         if (!isMetaMaskInstalled()) {
-    //             alert("please install metamask")
-    //         } else {
-    //             connect()
-    //         }
-    //     };
+        const MetaMaskClientCheck = () => {
+            if (!isMetaMaskInstalled()) {
+                alert("Please install metamask extension")
+            } else {
+                connect()
+            }
+        };
 
-    //     MetaMaskClientCheck();
-    // };
-
-    // solwallet
-
-    const injectedWallet = useMemo(() => {
-        try {
-          let wallet = new Wallet(window.solana, network);
-
-        } catch (e) {
-          console.log(`Could not create injected wallet: ${e}`);
-          return null;
-        }
-      }, [network]);
+        MetaMaskClientCheck();
+    };
 
     useEffect(() => {
         if (selectedWallet) {
-
             dispatch({type: CONNECT_SOL_WALLET.LOADING})
-
             selectedWallet.on('connect', () => {
                 //save to redux
                 dispatch({type: CONNECT_SOL_WALLET.SUCCESS, payload: selectedWallet})
             });
-
             selectedWallet.on('disconnect', () => {
             });
-
             selectedWallet.connect();
             return () => {
                 selectedWallet.disconnect();
@@ -103,18 +86,18 @@ export default function ConnectWallet(props) {
             title={"Connect to a wallet"}
         >
             <div>
-                {/* <ItemConnecWallet
+                <ItemConnecWallet
                     name="MetaMask"
                     logo={MetaMaskLogo}
                     action={() => connectMetaMask()}
-                /> */}
+                />
 
-                <ItemConnecWallet
+                {/* <ItemConnecWallet
                     name="SolWallet"
                     logo={SolWalletLogo}
                     action={() => setSelectedWallet(urlWallet)}
 
-                />
+                /> */}
                 {
                     (ConnectWalletState.isWalletConnecting || ConnectWalletState.isSolWalletConnecting) &&
                     <div style={{

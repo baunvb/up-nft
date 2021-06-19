@@ -1,7 +1,9 @@
-export const IRON_CONTRACTS_ADDRESS = "0x7b65b489fe53fce1f6548db886c08ad73111ddd8"
-
+export const BASE_PINATA_URL = "https://gateway.pinata.cloud/ipfs/"
+export const BASE_BSCSCAN_URL = "https://bscscan.com/"
 export const PROVIDER = "https://apis.ankr.com/cc6cbaa7d14f4bfab6efbdd4b17594c0/2146606aabd8e0a6683c9920dccf924b/binance/full/main"
 
+export const ROPSTEN_PROVIDER = "https://ropsten.infura.io/v3/901c7a2bcb15419d9973e6e71be1378b"
+// https://eth-ropsten.alchemyapi.io/v2/zm6nzudIjSr-tgreiywiwnrr6QVhLbWa
 export const tokenCgkIdMap: any = {
     IRON: "iron-stablecoin",
     STEEL: "steel",

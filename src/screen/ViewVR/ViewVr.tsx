@@ -1,13 +1,29 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import "./view.css"
 import QRCode from "react-qr-code";
 import { Nft } from '../../utils/Type';
 import { FaInstagram, FaFacebook } from 'react-icons/fa';
+import { useHistory } from 'react-router';
+import { getNftData } from '../../utils/Util';
 
 const ViewVr: React.FC<Nft> = (Nft) => {
+    const history = useHistory()
+    const [nft, setNft] = useState<Nft>(null)
+
+    const { search } = window.location;
+    const params = new URLSearchParams(search);
+    const categoryId = params.get("id")
+
     const toggleFullScreen = () => {
         document.getElementById("image").requestFullscreen();
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setNft(await getNftData(categoryId))
+        }
+        fetchData()
+    }, [])
 
     return (
         <div className="view">
@@ -18,7 +34,7 @@ const ViewVr: React.FC<Nft> = (Nft) => {
             <div className="view-qr-wrapper">
                 <div>
                     <div className="view-qr">
-                        <QRCode size={200} value={"https://ww.instagram.com/ar/" + Nft.vr_id} />
+                        <QRCode size={200} value={"https://ww.instagram.com/ar/" + nft?.vr_id} />
                     </div>
                     <span className="view-qr-social">
                         <FaInstagram size={20} />
@@ -27,7 +43,7 @@ const ViewVr: React.FC<Nft> = (Nft) => {
                 </div>
                 <div>
                     <div className="view-qr">
-                        <QRCode size={200} value={"https://www.facebook.com/fbcameraeffects/tryit/" + Nft.vr_id} />
+                        <QRCode size={200} value={"https://www.facebook.com/fbcameraeffects/tryit/" + nft?.vr_id} />
                     </div>
                     <span className="view-qr-social">
                         <FaFacebook size={20} />
@@ -45,12 +61,15 @@ const ViewVr: React.FC<Nft> = (Nft) => {
 
             </ul>
             <div className="view-btn">
+                <button className="view-btn-cancel"
+                    onClick={() => history.goBack()}
+                >Cancel</button>
                 <button className="btn-active"
                     onClick={() => toggleFullScreen()}
                 >Continue</button>
             </div>
             <div>
-                <img id="image" alt="" src="https://i.pinimg.com/originals/93/c2/ad/93c2adc4af76251f20d615ce146b1f33.jpg" />
+                <img id="image" alt="" src={nft?.image} />
             </div>
         </div>
     )

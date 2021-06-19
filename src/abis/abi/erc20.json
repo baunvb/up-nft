@@ -10,7 +10,6 @@
       }
     ],
     "payable": false,
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -28,12 +27,11 @@
     "name": "approve",
     "outputs": [
       {
-        "name": "",
+        "name": "success",
         "type": "bool"
       }
     ],
     "payable": false,
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -47,7 +45,6 @@
       }
     ],
     "payable": false,
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -69,12 +66,11 @@
     "name": "transferFrom",
     "outputs": [
       {
-        "name": "",
+        "name": "success",
         "type": "bool"
       }
     ],
     "payable": false,
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -88,26 +84,86 @@
       }
     ],
     "payable": false,
-    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawEther",
+    "outputs": [],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_value",
+        "type": "uint256"
+      }
+    ],
+    "name": "burn",
+    "outputs": [
+      {
+        "name": "success",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_value",
+        "type": "uint256"
+      }
+    ],
+    "name": "unfreeze",
+    "outputs": [
+      {
+        "name": "success",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
     "type": "function"
   },
   {
     "constant": true,
     "inputs": [
       {
-        "name": "_owner",
+        "name": "",
         "type": "address"
       }
     ],
     "name": "balanceOf",
     "outputs": [
       {
-        "name": "balance",
+        "name": "",
         "type": "uint256"
       }
     ],
     "payable": false,
-    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
     "type": "function"
   },
   {
@@ -121,7 +177,6 @@
       }
     ],
     "payable": false,
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -137,25 +192,55 @@
       }
     ],
     "name": "transfer",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
+    "outputs": [],
     "payable": false,
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "constant": true,
     "inputs": [
       {
-        "name": "_owner",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "freezeOf",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_value",
+        "type": "uint256"
+      }
+    ],
+    "name": "freeze",
+    "outputs": [
+      {
+        "name": "success",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
         "type": "address"
       },
       {
-        "name": "_spender",
+        "name": "",
         "type": "address"
       }
     ],
@@ -167,35 +252,33 @@
       }
     ],
     "payable": false,
-    "stateMutability": "view",
     "type": "function"
   },
   {
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "fallback"
-  },
-  {
-    "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "spender",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "value",
+        "name": "initialSupply",
         "type": "uint256"
+      },
+      {
+        "name": "tokenName",
+        "type": "string"
+      },
+      {
+        "name": "decimalUnits",
+        "type": "uint8"
+      },
+      {
+        "name": "tokenSymbol",
+        "type": "string"
       }
     ],
-    "name": "Approval",
-    "type": "event"
+    "payable": false,
+    "type": "constructor"
+  },
+  {
+    "payable": true,
+    "type": "fallback"
   },
   {
     "anonymous": false,
@@ -217,6 +300,57 @@
       }
     ],
     "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "Burn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "Freeze",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "Unfreeze",
     "type": "event"
   }
 ]

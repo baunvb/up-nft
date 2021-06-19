@@ -12,7 +12,7 @@ export default function DialogComponent(props) {
         <Dialog fullWidth={true} onClose={() => props.onClose()} open={props.open}>
             <div className="dialog">
                 <div className="dialog-header">
-                    <span className="dialog-title">{props.title}</span>
+                    <span className="dialog-title">{props?.title}</span>
                     <IconButton className="dialog-close" onClick={() => props.onClose()}>
                         <CloseIcon />
                     </IconButton>

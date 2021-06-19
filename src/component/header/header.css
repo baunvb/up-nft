@@ -11,6 +11,7 @@
     display: flex;
     justify-content: flex-start;
     text-decoration: none;
+    align-items: center;
 }
 .header-center {
     width: 264px;
@@ -122,6 +123,19 @@
     margin-right: 4px;
     margin-bottom: -3px;
     color: rgb(108, 114, 132);
+}
+.header-btn-disconnect {
+    width: 100px;
+    background: transparent;
+    margin: 20px 0 0 50%;
+    transform: translate(-50%, 0);
+    outline: none;
+    border: none;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    color: #F3A35A;
+    cursor: pointer;
 }
 @media only screen 
   and (min-device-width: 320px) 
