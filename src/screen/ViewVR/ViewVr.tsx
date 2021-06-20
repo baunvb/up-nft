@@ -4,7 +4,7 @@ import QRCode from "react-qr-code";
 import { Nft } from '../../utils/Type';
 import { FaInstagram, FaFacebook } from 'react-icons/fa';
 import { useHistory } from 'react-router';
-import { getNftData } from '../../utils/Util';
+import { getCategoryData } from '../../utils/Util';
 
 const ViewVr: React.FC<Nft> = (Nft) => {
     const history = useHistory()
@@ -20,7 +20,7 @@ const ViewVr: React.FC<Nft> = (Nft) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            setNft(await getNftData(categoryId))
+            setNft(await getCategoryData(categoryId))
         }
         fetchData()
     }, [])
@@ -47,7 +47,7 @@ const ViewVr: React.FC<Nft> = (Nft) => {
                     </div>
                     <span className="view-qr-social">
                         <FaFacebook size={20} />
-                        <span style={{ marginLeft: "8px" }}>Instagram</span>
+                        <span style={{ marginLeft: "8px" }}>Facebook</span>
                     </span>
                 </div>
             </div>

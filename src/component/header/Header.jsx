@@ -4,26 +4,28 @@ import { NavLink } from 'react-router-dom'
 
 import "./header.css"
 import { useSelector, useDispatch } from 'react-redux'
-import { connectWallet, disConnectWallet, getWalletAddress } from '../../data/action/WalletAction'
-import { formatShortWalletAddress } from '../../utils/Util'
+import { getWalletAddress } from '../../data/action/WalletAction'
+import { formatShortWalletAddress, isValidNetwork } from '../../utils/Util'
 import DialogComponent from '../dialog/Dialog'
 import { FaCopy, FaExternalLinkAlt, FaTwitter } from 'react-icons/fa';
 import Tooltip from '@material-ui/core/Tooltip';
 import Logo from "../../assets/images/logo.png"
 import { Github, Twitter, Discord, Telegram } from 'react-bootstrap-icons';
-import { FaTelegram, FaMediumM, FaDiscord } from 'react-icons/fa';
-import { disconnectMetaMaskWallet } from '../../data/api/Api'
+import { FaMediumM, FaDiscord } from 'react-icons/fa';
 import { BASE_BSCSCAN_URL } from '../../utils/Constants'
+import { getSelectedAddress, listenChainChanged, listenDisconnect } from '../../data/api/Api'
 
 export default function Header() {
     const dispatch = useDispatch();
     const ConnectWalletState = useSelector(state => state.WalletReducer)
     const [open, setOpen] = useState(false)
+    const [isValidNet, setIsValid] = useState(true)
     const [copyTooltip, setCopyToolTip] = useState("Copy")
     const [openAccount, setOpenAccount] = useState(false)
-
-    useEffect(() => {
+    useEffect(async () => {
+        setIsValid(await isValidNetwork())
         dispatch(getWalletAddress())
+        listenChainChanged(window.ethereum)
     }, [])
 
     return (
@@ -46,7 +48,11 @@ export default function Header() {
                                 }}
                             >Change</button> */}
                         </div>
-                        <span className="header-wallet-address">{formatShortWalletAddress(ConnectWalletState.myWalletAddress)}</span>
+                        <span className="header-wallet-address">
+                            {
+                                formatShortWalletAddress(getSelectedAddress())
+                            }
+                        </span>
                         <div className="header-wallet-copy">
                             <Tooltip title={copyTooltip}>
                                 <span style={{ display: "inline-block", marginRight: "20px" }}
@@ -92,19 +98,42 @@ export default function Header() {
 
             </div>
             <div className="header-right">
+                <a
+                    className="header-collection"
+                    href="https://docs.upfi.network"
+                    target="_blank"
+                >Documentations</a>
+                <NavLink
+                    className="header-collection"
+                    to="/mycollection"
+                >My collections</NavLink>
+
+
                 {
                     ConnectWalletState.myWalletAddress ?
-                        <div className="header-wallet"
-                            onClick={() => setOpenAccount(true)}
-                        >
-                            <span className="header-wallet-address">{formatShortWalletAddress(ConnectWalletState.myWalletAddress)}</span>
-                            <span className="header-wallet-icon"></span>
-                        </div> :
+                        isValidNet ?
+                            <div className="header-wallet"
+                                onClick={() => setOpenAccount(true)}
+                            >
+                                <span className="header-wallet-address">
+                                    {
+
+                                        formatShortWalletAddress(getSelectedAddress())
+                                    }
+                                </span>
+                                <span className="header-wallet-icon"></span>
+                            </div>
+                            :
+                            <span className="header-network-invalid">
+                                Network invalid
+                            </span>
+
+                        :
                         <button className="header-connect"
                             onClick={() => setOpen(true)}
                         >
                             Connect my wallet
-                </button>
+                        </button>
                 }
             </div>
 

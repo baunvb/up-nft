@@ -155,6 +155,9 @@
 .detail-dialog-tx-address > span {
     margin-left: 6px;
 }
+.detail-warning {
+    color: #8F929A;
+}
 @media only screen 
   and (min-device-width: 320px) 
   and (max-device-width: 768px){

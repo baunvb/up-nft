@@ -4,6 +4,7 @@ import { CurrencyExchange, HouseFill, CurrencyDollar, FileTextFill, Coin } from 
 import { FaCubes, FaExchangeAlt, FaExternalLinkAlt, FaHandHoldingUsd } from 'react-icons/fa';
 import Detail from '../screen/Detail/Detail';
 import ViewVr from '../screen/ViewVR/ViewVr';
+import MyCollection from '../screen/MyCollection/MyCollection';
 
 const SIZE = 20;
 
@@ -34,6 +35,12 @@ export const Routers: Array<route> = [
         path: "/view",
         name: "View VR",
         component: ViewVr,
+        icon: <HouseFill size={SIZE} />
+    },
+    {
+        path: "/mycollection",
+        name: "My collections",
+        component: MyCollection,
         icon: <HouseFill size={SIZE} />
     }
 ]

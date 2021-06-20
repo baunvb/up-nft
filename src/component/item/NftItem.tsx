@@ -1,9 +1,9 @@
 import React from 'react';
 import "./nft-item.css"
 import { NavLink } from 'react-router-dom'
-import { formatShortWalletAddress } from '../../../../utils/Util';
-import { Nft } from '../../../../utils/Type';
-import DefaultImg from "../../../../assets/images/item_preview_lock.png"
+import { formatShortWalletAddress } from '../../utils/Util';
+import { Nft } from '../../utils/Type';
+import DefaultImg from "../../assets/images/item_preview_lock.png"
 
 const NftItem: React.FC<Nft> = (ItemProps) => {
   return (
@@ -29,6 +29,11 @@ const NftItem: React.FC<Nft> = (ItemProps) => {
         </div>
       </div>
       {
+        ItemProps.type == "collection"? 
+        <NavLink
+            to={'/view?id=' + ItemProps.id}
+            className={"nft-item-btn btn-active"}
+          >VIEW EXPERIENCE</NavLink> :
         ItemProps.isSale ?
           <NavLink
             to={'/detail?id=' + ItemProps.id}

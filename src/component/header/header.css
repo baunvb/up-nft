@@ -3,11 +3,10 @@
     width: 80%;
     background: transparent;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin: auto;
 }
 .header-left {
-    flex: 1;
     display: flex;
     justify-content: flex-start;
     text-decoration: none;
@@ -20,7 +19,6 @@
     align-items: center;
 }
 .header-right {
-    flex: 1;
     display: flex;
     justify-content: flex-end;
 }
@@ -87,6 +85,15 @@
     margin-right: 16px;
     color: #FFFFFF;
 }
+.header-network-invalid {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+    color: #ff0000;
+}
 .header-wallet-icon {
     background: linear-gradient(93.87deg, #F6AA17 -5.07%, #B050DA 98.15%);
     border: 2px solid #FFFFFF;
@@ -136,6 +143,15 @@
     line-height: 22px;
     color: #F3A35A;
     cursor: pointer;
+}
+.header-collection {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
 }
 @media only screen 
   and (min-device-width: 320px) 

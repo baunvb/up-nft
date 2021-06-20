@@ -1,5 +1,7 @@
+import { Web } from '@material-ui/icons';
 import Web3 from 'web3'
-import { COINGECKO_API, tokenCgkIdMap } from '../../utils/Constants';
+import { COINGECKO_API, MAINNET_PROVIDER, tokenCgkIdMap } from '../../utils/Constants';
+
 declare const window: any;
 
 //connect wallet api
@@ -24,20 +26,32 @@ export const getWalletAddress = async () => {
     } else if (window.web3) {
         web3 = new Web3(window.web3.currentProvider);
     };
+    await window.ethereum.enable();
+
     return await web3.eth.getAccounts()
 }
 
 export const initWeb3 = () => {
-    
     let web3: Web3;
     if (window.ethereum) {
         web3 = new Web3(window.ethereum);
     } else if (window.web3) {
         web3 = new Web3(window.web3.currentProvider)
-    };
+    } else {
+        web3 = new Web3(new Web3.providers.HttpProvider(MAINNET_PROVIDER))
+    }
     return web3
+
 }
 
 export const getSelectedAddress = () => {
     return window.ethereum.selectedAddress
+}
+
+export const listenChainChanged = (ethereum: any) => {
+    ethereum.on('chainChanged', (chainId: string) => window.location.reload());
+}
+
+export const listenDisconnect = (ethereum: any) => {
+    ethereum.on('disconnect', () => window.location.reload());
 }

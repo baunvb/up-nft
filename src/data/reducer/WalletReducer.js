@@ -22,6 +22,7 @@ export const WalletReducer = (state = initState, action) => {
                 isWalletConnecting: false,
                 myWalletAddress: action.payload[0]
             }
+            window.location.reload()
         case CONNECT_WALLET.ERROR:
             return {
                 ...state,

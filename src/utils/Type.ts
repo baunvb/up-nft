@@ -12,13 +12,15 @@ export type Nft = {
     vr_id?: string,
     contract?: string,
     amount?: number,
-    max?: number
+    max?: number,
+    type?: "market" | "collection"
 }
 export type MetaData = {
     name: string,
     description: string,
     image: string,
-    vr_id: string
+    vr_id: string,
+    date?: string
 }
 
 export type DetaiData = {

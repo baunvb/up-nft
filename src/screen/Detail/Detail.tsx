@@ -9,7 +9,7 @@ import Web3 from 'web3'
 import { getSelectedAddress, initWeb3 } from '../../data/api/Api';
 import { AbiItem } from 'web3-utils';
 import Contracts from '../../contracts/Contracts';
-import { formatCurrency, getDetailCategory, _artIdToCategoryId, unit256ToNumber, getNftData, mintArtByCategoryId, formatShortWalletAddress } from '../../utils/Util';
+import { formatCurrency, getDetailCategory, _artIdToCategoryId, unit256ToNumber, getCategoryData, mintArtByCategoryId, formatShortWalletAddress, getAmountCategory, getAmountNFT, ownerOfNft, getBalanceOfConnectedWallet, getCurrentChainId, isValidNetwork } from '../../utils/Util';
 import { nthArg } from 'lodash';
 import Loading from '../../component/loading/Loading';
 import { FaExternalLinkAlt } from 'react-icons/fa';
@@ -20,26 +20,52 @@ declare const window: any;
 
 const Detail: React.FC<Nft> = () => {
     const [nft, setNft] = useState<Nft>(null)
-    const [isLoading, setLoading] = useState(true)
+    const [isLoading, setLoading] = useState(false)
     const [isTxLoading, setTxLoading] = useState(false)
     const [dialog, setDialog] = useState(null)
     const [mintingResult, setMintingResult] = useState({ isSuccess: Boolean, message: String })
     const [balance, setBalance] = useState(0);
+    const [isValidNet, setIsValidNet] = useState(false)
     const { search } = window.location;
     const params = new URLSearchParams(search);
     const categoryId = params.get("id")
+
     useEffect(() => {
         const fetchData = async () => {
-            let value = unit256ToNumber(await Contracts.BNB.methods.balanceOf(getSelectedAddress()).call())
-            setBalance(value)
-            setNft(await getNftData(categoryId))
-            setLoading(false)
+            //check is valid network first
+            const isValid = await isValidNetwork()
+            setIsValidNet(isValid)
+            if (isValid) {
+                setLoading(true)
+                getCurrentChainId()
+                let value = unit256ToNumber(await getBalanceOfConnectedWallet())
+                setBalance(value)
+                setNft(await getCategoryData(categoryId))
+                setLoading(false)
+                getCurrentChainId()
+            }
+
         }
         fetchData()
     }, [])
 
-    function handleErr(err: any) {
+    function handleNftUnavaiable() {
+        setDialog(
+            <DialogComponent
+                open={true}
+                onClose={() => setDialog(null)}
+            >
+                <div>
+                    <span className="detail-dialog-tx-header">Purchasing is currently unavaiable</span>
+                    <span className="detail-dialog-tx-address"
+                        onClick={() => window.location.reload()}
+                    >Reload</span>
+                </div>
+            </DialogComponent>
+        )
+    }
 
+    function handleErr(err: any) {
         setDialog(
             <DialogComponent
                 open={true}
@@ -60,7 +86,7 @@ const Detail: React.FC<Nft> = () => {
         >
             <div>
                 <span className="detail-dialog-tx-header">Transaction was submitted</span>
-                <a href={BASE_BSCSCAN_URL + "tx/" + tx} target="_blank" className="detail-dialog-tx-address">{formatShortWalletAddress("0x07c1a334a4740186cfe2fde4e773e2c42279f8da450c15453a64b064c7c7f7a9")}
+                <a href={BASE_BSCSCAN_URL + "tx/" + tx} target="_blank" className="detail-dialog-tx-address">{formatShortWalletAddress(tx)}
                     <span>
                         <FaExternalLinkAlt />
                     </span>
@@ -71,26 +97,39 @@ const Detail: React.FC<Nft> = () => {
     }
 
     async function requestBuyNft() {
-        setTxLoading(true)
-        var tx = await mintArtByCategoryId(categoryId, { gas: 3000000, value: nft?.price.toString() || "0" }, (err: any, tx: string) => {
-            setTxLoading(false)
+        var currentCategoryData = await getDetailCategory(categoryId)
 
-            if (!err) {
-                console.log("Minting COMPLETE:", tx)
-                handleComplete(tx)
-            } else {
-                console.log("Minting err:", err)
-                handleErr(err)
-                //                 code: 4001
-                // message: "MetaMask Tx Signature: User denied transaction signature."
-                // stack: "Error: MetaMask Tx Signature: User denied transaction signature."
-            }
-        });
+        if (currentCategoryData.max == currentCategoryData.amount) {
+            handleNftUnavaiable()
+        } else {
+            setTxLoading(true)
+            var tx = await mintArtByCategoryId(categoryId, { gas: 400000, value: nft?.price.toString() || "0" }, (err: any, tx: string) => {
+                setTxLoading(false)
+
+                if (!err) {
+                    handleComplete(tx)
+                } else {
+                    handleErr(err)
+                }
+            });
+        }
     }
 
     if (isLoading) {
-        return <div style={{ width: "100%", height: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        return <div className="middle">
             <Loading />
+        </div>
+    }
+
+    if (!Boolean(getSelectedAddress())) {
+        return <div className="middle">
+            <span className="detail-warning">Please connect your wallet</span>
+        </div>
+    }
+
+    if (!isValidNet) {
+        return <div className="middle">
+            <span className="detail-warning">Please change your wallet's network</span>
         </div>
     }
 

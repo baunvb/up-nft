@@ -18,6 +18,8 @@
     line-height: 29px;
     color: #FFFFFF;
     margin-left: 10px;
+    margin-bottom: 8px;
+    display: block;
 }
 @media only screen 
   and (min-device-width: 320px) 
