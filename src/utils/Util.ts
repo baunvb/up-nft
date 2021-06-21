@@ -5,6 +5,7 @@ import { BASE_PINATA_URL, NETWORK } from "./Constants";
 import { Nft, MetaData, DetaiData } from "./Type";
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { chain } from "lodash";
+declare const window: any;  
 
 
 BigNumber.config({
@@ -204,4 +205,8 @@ export const getCurrentChainId = async() => {
 export const isValidNetwork = async () => {
     var currentChainId = await getCurrentChainId()
     return currentChainId == NETWORK.BSC_TESTNET.chainId
+}
+
+export const isEthereumSupport = () => {
+    return Boolean(window.ethereum)
 }

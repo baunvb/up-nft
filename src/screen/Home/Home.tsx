@@ -9,6 +9,8 @@ import MarketPlace from './component/list/MarketPlace';
 import { MarkunreadOutlined } from '@material-ui/icons';
 import { getSelectedAddress } from '../../data/api/Api';
 import { isValidNetwork } from '../../utils/Util';
+import ErrorNetwork from '../../component/error/ErrorNetwork';
+import ErrorWallet from '../../component/error/ErrorWallet';
 
 const Home: React.FC<{}> = () => {
     const [isValidNet, setIsValidNet] = useState(false)
@@ -23,15 +25,11 @@ const Home: React.FC<{}> = () => {
     }, [ConnectWalletState])
 
     if (!Boolean(getSelectedAddress())) {
-        return <div className="middle">
-            <span className="detail-warning">Please connect your wallet</span>
-        </div>
+        return <ErrorWallet/>
     }
 
     if (!isValidNet) {
-        return <div className="middle">
-            <span className="detail-warning">Please change your wallet's network</span>
-        </div>
+        return <ErrorNetwork />
     }
 
     return (

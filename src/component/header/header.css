@@ -167,4 +167,14 @@
         width: 25px;
         height: 25px;
     }
+    .header {
+        width: 95%;
+    }
+    .header-center > a {
+        width: 30px;
+        height: 30px;
+    }
+    .header-center {
+        width: 190px;
+    }
   }

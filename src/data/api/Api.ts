@@ -26,8 +26,6 @@ export const getWalletAddress = async () => {
     } else if (window.web3) {
         web3 = new Web3(window.web3.currentProvider);
     };
-    await window.ethereum.enable();
-
     return await web3.eth.getAccounts()
 }
 

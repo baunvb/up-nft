@@ -14,6 +14,9 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(AppReducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga)
 
+
+console.log("process.env", process.env.REACT_APP_ETHEREUM_NETWORK)
+
 ReactDOM.render(
   <Provider
     store={store}

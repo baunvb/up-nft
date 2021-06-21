@@ -12,8 +12,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Logo from "../../assets/images/logo.png"
 import { Github, Twitter, Discord, Telegram } from 'react-bootstrap-icons';
 import { FaMediumM, FaDiscord } from 'react-icons/fa';
-import { BASE_BSCSCAN_URL } from '../../utils/Constants'
+import { NETWORK } from '../../utils/Constants'
 import { getSelectedAddress, listenChainChanged, listenDisconnect } from '../../data/api/Api'
+
+const CURRENT_NETWORK = process.env.REACT_APP_ETHEREUM_NETWORK == "BSC_MAINNET" ? NETWORK["BSC_MAINNET"] : NETWORK["BSC_TESTNET"]
 
 export default function Header() {
     const dispatch = useDispatch();
@@ -68,7 +70,7 @@ export default function Header() {
                             </span>
                             </Tooltip>
 
-                            <a className="header-wallet-icon-action" href={BASE_BSCSCAN_URL + "address/" + ConnectWalletState.myWalletAddress} target="_blank">
+                            <a className="header-wallet-icon-action" href={CURRENT_NETWORK.scanUrl + "address/" + ConnectWalletState.myWalletAddress} target="_blank">
                                 <span className="header-wallet-icon-action"><FaExternalLinkAlt /></span>
                                 View on BSCscan
                             </a>

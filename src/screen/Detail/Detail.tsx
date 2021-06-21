@@ -14,9 +14,15 @@ import { nthArg } from 'lodash';
 import Loading from '../../component/loading/Loading';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import DialogComponent from '../../component/dialog/Dialog';
-import { BASE_BSCSCAN_URL } from '../../utils/Constants';
+import { NETWORK } from '../../utils/Constants';
+import ErrorNetwork from '../../component/error/ErrorNetwork';
+import ErrorWallet from '../../component/error/ErrorWallet';
 
 declare const window: any;
+
+const CURRENT_NETWORK = process.env.REACT_APP_ETHEREUM_NETWORK == "BSC_MAINNET" ? NETWORK["BSC_MAINNET"] : NETWORK["BSC_TESTNET"]
+
+
 
 const Detail: React.FC<Nft> = () => {
     const [nft, setNft] = useState<Nft>(null)
@@ -86,7 +92,7 @@ const Detail: React.FC<Nft> = () => {
         >
             <div>
                 <span className="detail-dialog-tx-header">Transaction was submitted</span>
-                <a href={BASE_BSCSCAN_URL + "tx/" + tx} target="_blank" className="detail-dialog-tx-address">{formatShortWalletAddress(tx)}
+                <a href={CURRENT_NETWORK.scanUrl + "tx/" + tx} target="_blank" className="detail-dialog-tx-address">{formatShortWalletAddress(tx)}
                     <span>
                         <FaExternalLinkAlt />
                     </span>
@@ -122,15 +128,11 @@ const Detail: React.FC<Nft> = () => {
     }
 
     if (!Boolean(getSelectedAddress())) {
-        return <div className="middle">
-            <span className="detail-warning">Please connect your wallet</span>
-        </div>
+        return <ErrorWallet/>
     }
 
     if (!isValidNet) {
-        return <div className="middle">
-            <span className="detail-warning">Please change your wallet's network</span>
-        </div>
+        return <ErrorNetwork/>
     }
 
     return (

@@ -34,12 +34,14 @@ export const tokenCgkIdMap: any = {
 export const COINGECKO_API = "https://api.coingecko.com/api/v3/simple/price";
 
 export const NETWORK = {
-	BSC_MAINNET: {
+	"BSC_MAINNET": {
+		name: "Binance Smart Chain Mainnet",
 		chainId: 56,
 		scanUrl: "https://bscscan.com/"
 	},
 
-	BSC_TESTNET: {
+	"BSC_TESTNET": {
+		name: "Binance Smart Chain Testnet",
 		chainId: 97,
 		scanUrl: "https://testnet.bscscan.com/"
 	}
