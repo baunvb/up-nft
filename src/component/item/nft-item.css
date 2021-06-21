@@ -16,8 +16,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
-.nft-item-img > img {
+.nft-item-img-img {
     margin: auto;
     max-width: 100%;
     box-sizing: border-box;

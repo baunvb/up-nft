@@ -1,10 +1,14 @@
 import "./layout.css"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Routers } from "../router/Routers";
 import Sidebar from "../component/sidebar/Sidebar";
 import Header from "../component/header/Header";
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { isValidNetwork } from "../utils/Util";
+import { getSelectedAddress } from "../data/api/Api";
+import ErrorWallet from "../component/error/ErrorWallet";
+import ErrorNetwork from "../component/error/ErrorNetwork";
 
 const isMobile: boolean = window.innerWidth < 768
 
@@ -19,6 +23,19 @@ const switchRoutes = (
 
 export default function Layout(props: any) {
   const [openSidebar, setOpen] = useState(false)
+  const [isValidNet, setIsValidNet] = useState(false)
+  const [isDetectingNetwork, setIsDectect] = useState(true)
+
+  useEffect(() => {
+    const checkNetwork = async () => {
+      //check is valid network first
+      const isValid = await isValidNetwork()
+      setIsValidNet(isValid)
+      setIsDectect(false)
+    }
+    checkNetwork()
+  }, [])
+
   return (
     <div className="layout">
       {/* <div className="layout-sidebar"
@@ -44,7 +61,12 @@ export default function Layout(props: any) {
         </span>
         <Header />
         <div>
-          {switchRoutes}
+          {
+            !Boolean(getSelectedAddress()) ?
+              <ErrorWallet /> : (!isValidNet && !isDetectingNetwork) ?
+                <ErrorNetwork /> :
+                switchRoutes
+          }
         </div>
       </div>
     </div>

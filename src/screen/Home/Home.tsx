@@ -13,24 +13,12 @@ import ErrorNetwork from '../../component/error/ErrorNetwork';
 import ErrorWallet from '../../component/error/ErrorWallet';
 
 const Home: React.FC<{}> = () => {
-    const [isValidNet, setIsValidNet] = useState(false)
     const ConnectWalletState = useSelector((state: any) => state.WalletReducer)
     useEffect(() => {
         const fetchData = async () => {
-            //check is valid network first
-            const isValid = await isValidNetwork()
-            setIsValidNet(isValid)
         }
         fetchData()
     }, [ConnectWalletState])
-
-    if (!Boolean(getSelectedAddress())) {
-        return <ErrorWallet/>
-    }
-
-    if (!isValidNet) {
-        return <ErrorNetwork />
-    }
 
     return (
         <div className="home">
