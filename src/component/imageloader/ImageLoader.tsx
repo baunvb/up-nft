@@ -27,6 +27,7 @@ const ImageLoader: React.FC<{ src: string, className: string }> = ({ src, classN
     return (
         <>
             <img ref={imgRef} alt="" src={src}
+                id="imgloader"
                 className={className}
                 onLoad={() => onLoad()}
             />
