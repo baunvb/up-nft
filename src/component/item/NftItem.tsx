@@ -16,7 +16,7 @@ const NftItem: React.FC<Nft> = (ItemProps) => {
             ItemProps.isSale ?
               // <img alt="" src={ItemProps.image} className="nft-item-img-img "/> :
               <ImageLoader src={ItemProps.image} className="nft-item-img-img" /> :
-              <img alt="" src={DefaultImg} />
+              <img alt="" className="nft-item-img-img" src={DefaultImg} />
           }
         </div>
         <span className="nft-item-name">{ItemProps.name}</span>
@@ -40,7 +40,7 @@ const NftItem: React.FC<Nft> = (ItemProps) => {
           <NavLink
             to={'/view?id=' + ItemProps.id}
             className={"nft-item-btn btn-active"}
-          >VIEW EXPERIENCE</NavLink> :
+          >Detail</NavLink> :
           ItemProps.isSale ?
             <NavLink
               to={'/detail?id=' + ItemProps.id}

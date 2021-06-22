@@ -5,6 +5,7 @@
     display: flex;
     justify-content: space-between;
     margin: auto;
+    align-items: center;
 }
 .header-left {
     display: flex;
@@ -12,14 +13,19 @@
     text-decoration: none;
     align-items: center;
 }
+.header-logo {
+    height: 50px;
+    width: auto;
+}
 .header-center {
-    width: 264px;
+    width: 224px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 .header-right {
     display: flex;
+    height: 50px;
     justify-content: flex-end;
 }
 .header-page-title {
@@ -29,8 +35,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     cursor: pointer;
     border: 1px solid #8F929A;
     color: #8F929A;
@@ -39,18 +45,17 @@
 }
 .header-center > a:hover {
     border: 1px solid #fff;
-    background: #ff0000;
     color: #fff;
 }
 .header-page-title > span:first-child {
     display: block;
     font-weight: 500;
-    font-size: 24px;
-    line-height: 29px;
+    font-size: 18px;
+    line-height: 22px;
     color: #FFFFFF;
 }
 .header-page-title > span:nth-child(2) {
-    font-size: 16px;
+    font-size: 12px;
     color: #FFFFFF;
 }
 .header-connect {
@@ -71,7 +76,7 @@
 .header-wallet {
     cursor: pointer;
     width: fit-content;
-    padding: 8px 16px;
+    padding: 8px 12px;
     border: 1px solid #FFFFFF;
     border-radius: 10px;
     display: flex;
@@ -79,7 +84,7 @@
 }
 .header-wallet-address {
     font-weight: 600;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 24px;
     display: inline-block;
     margin-right: 16px;
@@ -98,16 +103,15 @@
     background: linear-gradient(93.87deg, #F6AA17 -5.07%, #B050DA 98.15%);
     border: 2px solid #FFFFFF;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;
-    width: 40px;
-    height: 40px;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
 }
 .header-detail-account {
     font-size: 0.825rem;
     font-weight: 500;
     color: rgb(108, 114, 132);
     width: 100%;
-    padding: 20px;
     border: 1px solid rgb(44, 47, 60);
     border-radius: 20px;
     position: relative;
@@ -150,7 +154,7 @@
     align-items: center;
     margin-right: 24px;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 24px;
 }
 @media only screen 

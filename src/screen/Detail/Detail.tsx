@@ -17,6 +17,7 @@ import DialogComponent from '../../component/dialog/Dialog';
 import { NETWORK } from '../../utils/Constants';
 import ErrorNetwork from '../../component/error/ErrorNetwork';
 import ErrorWallet from '../../component/error/ErrorWallet';
+import ImageLoader from '../../component/imageloader/ImageLoader';
 
 declare const window: any;
 
@@ -31,25 +32,20 @@ const Detail: React.FC<Nft> = () => {
     const [dialog, setDialog] = useState(null)
     const [mintingResult, setMintingResult] = useState({ isSuccess: Boolean, message: String })
     const [balance, setBalance] = useState(0);
-    const [isValidNet, setIsValidNet] = useState(false)
     const { search } = window.location;
     const params = new URLSearchParams(search);
     const categoryId = params.get("id")
 
     useEffect(() => {
         const fetchData = async () => {
-            //check is valid network first
-            const isValid = await isValidNetwork()
-            setIsValidNet(isValid)
-            if (isValid) {
-                setLoading(true)
-                getCurrentChainId()
-                let value = unit256ToNumber(await getBalanceOfConnectedWallet())
-                setBalance(value)
-                setNft(await getCategoryData(categoryId))
-                setLoading(false)
-                getCurrentChainId()
-            }
+            setLoading(true)
+            getCurrentChainId()
+            let value = unit256ToNumber(await getBalanceOfConnectedWallet())
+            setBalance(value)
+            setNft(await getCategoryData(categoryId))
+            setLoading(false)
+            getCurrentChainId()
+
 
         }
         fetchData()
@@ -127,14 +123,6 @@ const Detail: React.FC<Nft> = () => {
         </div>
     }
 
-    if (!Boolean(getSelectedAddress())) {
-        return <ErrorWallet/>
-    }
-
-    if (!isValidNet) {
-        return <ErrorNetwork/>
-    }
-
     return (
         <div className="detail">
             {dialog}
@@ -155,13 +143,18 @@ const Detail: React.FC<Nft> = () => {
                     <span className="detail-text detail-text-large">{`${formatCurrency(nft?.price)} BNB`}</span>
                     <span className="detail-label">Release date</span>
                     <span className="detail-text detail-text-large">{nft?.date}</span>
+                    <span className="detail-label">Max supply</span>
+                    <span className="detail-text detail-text-large">{nft?.max}</span>
                     <span className="detail-label">AR viewing instructinos</span>
                     <span className="detail-text ">{`This poster includes optional Augmented Reality features. Using a phone or tablet, you can experience this poster as it comes to life, including animation and sound.`}</span>
                 </div>
 
                 <div className="detail-center">
                     <div className="detail-model">
-                        <img src={nft?.image} />
+                        <ImageLoader
+                            src={nft?.image}
+                            className=""
+                        />
                     </div>
                     <NavLink
                         to={"/view?id=" + categoryId}

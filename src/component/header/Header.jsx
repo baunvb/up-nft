@@ -85,7 +85,7 @@ export default function Header() {
                 </DialogComponent>
             }
             <NavLink className="header-left" to={"/"}>
-                <img src={Logo} alt="" />
+                <img src={Logo} alt="" className="header-logo" />
                 <span className="header-page-title">
                     <span>HEROFI</span>
                     <span>Network</span>
