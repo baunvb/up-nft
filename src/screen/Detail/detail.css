@@ -25,6 +25,7 @@
     width: 80%;
     text-align: center;
     height: auto;
+    position: relative;
 }
 .detail-model > img {
     width: auto;
@@ -155,7 +156,7 @@
 .detail-dialog-tx-address > span {
     margin-left: 6px;
 }
-.detail-warning {
+.error-text {
     color: #8F929A;
 }
 @media only screen 

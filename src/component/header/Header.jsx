@@ -127,7 +127,7 @@ export default function Header() {
                             </div>
                             :
                             <span className="header-network-invalid">
-                                Network invalid
+                                Wrong Network
                             </span>
 
                         :

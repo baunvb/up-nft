@@ -5,7 +5,7 @@ import { BASE_PINATA_URL, NETWORK } from "./Constants";
 import { Nft, MetaData, DetaiData } from "./Type";
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import { chain } from "lodash";
-declare const window: any;  
+declare const window: any;
 
 
 BigNumber.config({
@@ -31,7 +31,7 @@ export const formatShortWalletAddress = (address: string): string => {
 }
 
 export const getDetailCategory = async (id: any) => {
-    var value = await Contracts.UP_NFT.methods._idToCategory(id).call()
+    let value = await Contracts.UP_NFT.methods._idToCategory(id).call()
     console.log("_idToCategory: id = " + id, value)
     //raw value
     // {    
@@ -42,9 +42,9 @@ export const getDetailCategory = async (id: any) => {
     //     price: "100000000000000000"
     //     url: "QmR8pf56LZ3qTvTyTiAqJgVtp4V9UCRLTeHaHbWLrGEgcW"
     // }
-    var data: DetaiData = {
+    let data: DetaiData = {
         amount: parseInt(value.amount),
-        id: parseInt(value.id),
+        id: parseInt(value.id), // this is categoryId
         isSale: value.isSale,
         max: parseInt(value.max),
         price: unit256ToNumber(parseFloat(value.price)),
@@ -55,16 +55,16 @@ export const getDetailCategory = async (id: any) => {
 
 
 export const _artIdToCategoryId = async (id: any) => {
-    var value = await Contracts.UP_NFT.methods._artIdToCategoryId(id).call()
+    let value = await Contracts.UP_NFT.methods._artIdToCategoryId(id).call()
     return value
 }
 
 export const getListCategoryData = async () => {
-    var amount: number = await getAmountCategory();
-    var listNft: Array<Nft> = []
+    let amount: number = await getAmountCategory();
+    let listNft: Array<Nft> = []
     for (let i: number = 1; i <= amount; i++) {
-        var nft = await getCategoryData(i);
-        if(nft != null) {
+        let nft = await getCategoryData(i);
+        if (nft != null) {
             listNft.push(nft)
         }
     }
@@ -79,22 +79,22 @@ export const getAmountCategory = async () => {
 }
 
 export const getAmountNFT = async () => {
-    var value = await Contracts.UP_NFT.methods.getAmountNFT().call()
+    let value = await Contracts.UP_NFT.methods.getAmountNFT().call()
     return value
 }
 
 export const getTokenURI = async (id: any) => {
-    var value = await Contracts.UP_NFT.methods.tokenURI(id).call()
+    let value = await Contracts.UP_NFT.methods.tokenURI(id).call()
     return value
 }
 
 export const fetchInfoFromURL = async (uilId: string) => {
-    var uri = BASE_PINATA_URL + uilId;
-    var info: MetaData;
+    let uri = BASE_PINATA_URL + uilId;
+    let info: MetaData;
     let res = await fetch(uri);
     let data = await res.text();
-    var str = data.replace(/\,(?!\s*?[\{\[\"\'\w])/g, "")
-    var json = JSON.parse(str)
+    let str = data.replace(/\,(?!\s*?[\{\[\"\'\w])/g, "")
+    let json = JSON.parse(str)
     info = {
         name: json.name,
         description: json.description,
@@ -107,17 +107,16 @@ export const fetchInfoFromURL = async (uilId: string) => {
 
 //full nft data
 export const getCategoryData = async (id: any) => {
-    var detailCategory: DetaiData = await getDetailCategory(id);
+    let detailCategory: DetaiData = await getDetailCategory(id);
     console.log("detailCategory", detailCategory)
     if (!Boolean(detailCategory.url) || !detailCategory.isSale) {
         return null
     } else {
-        var infoFromUrl: MetaData = await fetchInfoFromURL(detailCategory.url);
-        var owner: string = await ownerOfNft(id)
-
-        var nftData: Nft = {
+        let infoFromUrl: MetaData = await fetchInfoFromURL(detailCategory.url);
+        let nftData: Nft = {
             ...detailCategory,
-            ...infoFromUrl
+            ...infoFromUrl,
+            owner: ""
         }
         return nftData;
     }
@@ -132,8 +131,8 @@ export const mintArtByCategoryId = async (id: any, options: any, callback: any) 
 
 }
 
-export const ownerOfNft = async (id: any) => {
-    return await Contracts.UP_NFT.methods.ownerOf(id).call()
+export const ownerOfNft = async (tokenId: any) => {
+    return await Contracts.UP_NFT.methods.ownerOf(tokenId).call()
 }
 
 export const getCategoryIdFromNftId = async (tokenId: any) => {
@@ -163,47 +162,52 @@ export const getNextReleaseItem = async () => {
 
 //get my balanceof owener
 export const getBalanceOf = async (owner: any) => {
-    var value = await Contracts.UP_NFT.methods.balanceOf(owner).call()
+    let value = await Contracts.UP_NFT.methods.balanceOf(owner).call()
     console.log("balanceOf owner: " + owner, value)
     return value
 }
 
 //get tokenId of owner with index
 export const getTokenIdOf = async (owner: any, index: any) => {
-    var value = await Contracts.UP_NFT.methods.tokeIdOf(owner, index).call()
+    let value = await Contracts.UP_NFT.methods.tokeIdOf(owner, index).call()
     console.log("tokeIdOf owner = " + owner + " index = " + index, value)
     return value
 }
 
 export const getListNftOfOwner = async (owner: any) => {
-    var count = await getBalanceOf(owner)
-    var listNft: Array<Nft> = []
+    let count = await getBalanceOf(owner)
+    let listNft: Array<Nft> = []
     for (let i = 1; i <= count; i++) {
-        var tokenId = await getTokenIdOf(owner, i);
-        var categoryId = await getCategoryIdFromNftId(tokenId);
-        var categoryData = await getCategoryData(categoryId);
-        categoryData = {...categoryData, owner: owner, type: "collection"}
-        if (categoryData != null ) {
-            listNft.push(categoryData)
+        let tokenId = await getTokenIdOf(owner, i);
+        let categoryId = await getCategoryIdFromNftId(tokenId);
+        let categoryData = await getCategoryData(categoryId);
+        if (categoryData != null) {
+            let nft: Nft = {
+                ...categoryData,
+                id: tokenId, //this is id of tokenId, different from category id
+                owner: owner,
+                type: "collection"
+            }
+            listNft.push(nft)
         }
     }
     return listNft
 }
 
 //get balance of wallet
-export const getBalanceOfConnectedWallet = async() => {
+export const getBalanceOfConnectedWallet = async () => {
     return await web3.eth.getBalance(getSelectedAddress())
 }
 
 //get current network chainId
 
-export const getCurrentChainId = async() => {
-    var chainId = await web3.eth.net.getId()
+export const getCurrentChainId = async () => {
+    let chainId = await web3.eth.net.getId()
     return chainId
 }
 
 export const isValidNetwork = async () => {
-    var currentChainId = await getCurrentChainId()
+    let currentChainId = await getCurrentChainId()
     return currentChainId == NETWORK.BSC_TESTNET.chainId
 }
 

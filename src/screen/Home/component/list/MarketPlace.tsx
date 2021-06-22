@@ -8,10 +8,12 @@ const MarketPlace: React.FC<{}> = () => {
     const [isLoading, setLoading] = useState(true)
     useEffect(() => {
         const fetchNextNftItems = async () => {
-            const items = await getNextReleaseItem()
             var listNft = await getListCategoryData();
-            setListItems([...listNft, ...items])
+            setListItems(listNft)
             setLoading(false)
+            const items = await getNextReleaseItem()
+            setListItems((previous) => [...previous, ...items])
+
         }
         fetchNextNftItems()
     }, [])

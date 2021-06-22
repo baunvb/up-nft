@@ -7,6 +7,7 @@ import DefaultImg from "../../assets/images/item_preview_lock.png"
 import ImageLoader from '../imageloader/ImageLoader';
 
 const NftItem: React.FC<Nft> = (ItemProps) => {
+
   return (
     <div className="nft-item" >
       <div className="nft-item-boder">
@@ -38,12 +39,12 @@ const NftItem: React.FC<Nft> = (ItemProps) => {
       {
         ItemProps.type == "collection" ?
           <NavLink
-            to={'/view?id=' + ItemProps.id}
+            to={`/detail?id=${ItemProps.id}&type=mycolection`}
             className={"nft-item-btn btn-active"}
           >Detail</NavLink> :
           ItemProps.isSale ?
             <NavLink
-              to={'/detail?id=' + ItemProps.id}
+              to={`/detail?id=${ItemProps.id}`}
               className={"nft-item-btn btn-active"}
             >Join NOW</NavLink> :
             <div

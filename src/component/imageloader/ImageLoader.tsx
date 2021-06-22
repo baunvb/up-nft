@@ -32,7 +32,7 @@ const ImageLoader: React.FC<{ src: string, className: string }> = ({ src, classN
                 onLoad={() => onLoad()}
             />
 
-            <div style={{ display: !loaded ? "block" : "none", width: '100%', height: '100%', position: "absolute" }}>
+            <div style={{ display: !loaded ? "block" : "none", width: '100%', height: '100%', position: "absolute", top: "0" }}>
                 <ImagePlaceholder />
             </div>
 

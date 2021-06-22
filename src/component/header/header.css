@@ -62,7 +62,7 @@
     background: linear-gradient(93.87deg, #F6AA17 -5.07%, #B050DA 98.15%);
     border-radius: 10px;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 24px;
     color: #FFFFFF;
     outline: none;
@@ -92,8 +92,8 @@
 }
 .header-network-invalid {
     font-weight: 600;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 16px;
+    line-height: 18px;
     display: flex;
     align-items: center;
     margin-right: 16px;
@@ -114,6 +114,7 @@
     width: 100%;
     border: 1px solid rgb(44, 47, 60);
     border-radius: 20px;
+    padding: 24px;
     position: relative;
 }
 .header-btn-change {

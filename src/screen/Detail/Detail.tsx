@@ -9,14 +9,12 @@ import Web3 from 'web3'
 import { getSelectedAddress, initWeb3 } from '../../data/api/Api';
 import { AbiItem } from 'web3-utils';
 import Contracts from '../../contracts/Contracts';
-import { formatCurrency, getDetailCategory, _artIdToCategoryId, unit256ToNumber, getCategoryData, mintArtByCategoryId, formatShortWalletAddress, getAmountCategory, getAmountNFT, ownerOfNft, getBalanceOfConnectedWallet, getCurrentChainId, isValidNetwork } from '../../utils/Util';
+import { formatCurrency, getDetailCategory, _artIdToCategoryId, unit256ToNumber, getCategoryData, mintArtByCategoryId, formatShortWalletAddress, getAmountCategory, getAmountNFT, ownerOfNft, getBalanceOfConnectedWallet, getCurrentChainId, isValidNetwork, getCategoryIdFromNftId } from '../../utils/Util';
 import { nthArg } from 'lodash';
 import Loading from '../../component/loading/Loading';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import DialogComponent from '../../component/dialog/Dialog';
 import { NETWORK } from '../../utils/Constants';
-import ErrorNetwork from '../../component/error/ErrorNetwork';
-import ErrorWallet from '../../component/error/ErrorWallet';
 import ImageLoader from '../../component/imageloader/ImageLoader';
 
 declare const window: any;
@@ -34,19 +32,26 @@ const Detail: React.FC<Nft> = () => {
     const [balance, setBalance] = useState(0);
     const { search } = window.location;
     const params = new URLSearchParams(search);
-    const categoryId = params.get("id")
+    const id = params.get("id")
+    const isMyCollection = params.get("type") == "mycolection"
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            getCurrentChainId()
             let value = unit256ToNumber(await getBalanceOfConnectedWallet())
             setBalance(value)
-            setNft(await getCategoryData(categoryId))
+            let detailData;
+            if (isMyCollection) {
+                // this id is tokenId
+                let categoryId = await getCategoryIdFromNftId(id)
+                detailData = await getCategoryData(categoryId);
+
+            } else {
+                // this id is categoryId
+                detailData = await getCategoryData(id);
+            }
+            setNft(detailData)
             setLoading(false)
-            getCurrentChainId()
-
-
         }
         fetchData()
     }, [])
@@ -99,13 +104,13 @@ const Detail: React.FC<Nft> = () => {
     }
 
     async function requestBuyNft() {
-        var currentCategoryData = await getDetailCategory(categoryId)
+        var currentCategoryData = await getDetailCategory(id)
 
         if (currentCategoryData.max == currentCategoryData.amount) {
             handleNftUnavaiable()
         } else {
             setTxLoading(true)
-            var tx = await mintArtByCategoryId(categoryId, { gas: 400000, value: nft?.price.toString() || "0" }, (err: any, tx: string) => {
+            var tx = await mintArtByCategoryId(id, { gas: 400000, value: nft?.price.toString() || "0" }, (err: any, tx: string) => {
                 setTxLoading(false)
 
                 if (!err) {
@@ -115,6 +120,17 @@ const Detail: React.FC<Nft> = () => {
                 }
             });
         }
+    }
+
+    function requestSellNft() {
+        setDialog(<DialogComponent
+            open={true}
+            onClose={() => setDialog(null)}
+        >
+            <div>
+                <span className="detail-dialog-tx-header">This feature is currently does not support</span>
+            </div>
+        </DialogComponent>)
     }
 
     if (isLoading) {
@@ -157,7 +173,7 @@ const Detail: React.FC<Nft> = () => {
                         />
                     </div>
                     <NavLink
-                        to={"/view?id=" + categoryId}
+                        to={!isMyCollection ? "/view?id=" + id : "/view?id=" + id + "&type=mycolection"}
                     >
                         <button className="detail-btn-view">VIEW EXPERIENCE</button>
                     </NavLink>
@@ -174,11 +190,26 @@ const Detail: React.FC<Nft> = () => {
 
                         </span>
                     </div>
-                    <button type="button" className="detail-btn-buy btn-active"
-                        onClick={() => requestBuyNft()}
-                    >
-                        Purchase the NFT
+
+                    {
+                        !isMyCollection ?
+                            <button type="button" className="detail-btn-buy btn-active"
+                                onClick={() => requestBuyNft()}
+                            >
+                                Buy the NFT
+                    </button> :
+                            <>
+                                <button type="button" className="detail-btn-buy btn-active"
+                                    onClick={() => requestSellNft()}
+                                >
+                                    Sell the NFT
                     </button>
+                            </>
+                    }
+
+
+
+
                 </div>
             </div>
 

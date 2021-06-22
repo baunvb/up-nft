@@ -4,7 +4,7 @@ import QRCode from "react-qr-code";
 import { Nft } from '../../utils/Type';
 import { FaInstagram, FaFacebook } from 'react-icons/fa';
 import { useHistory } from 'react-router';
-import { getCategoryData } from '../../utils/Util';
+import { getCategoryData, getCategoryIdFromNftId } from '../../utils/Util';
 
 const ViewVr: React.FC<Nft> = (Nft) => {
     const history = useHistory()
@@ -12,7 +12,8 @@ const ViewVr: React.FC<Nft> = (Nft) => {
 
     const { search } = window.location;
     const params = new URLSearchParams(search);
-    const categoryId = params.get("id")
+    const id = params.get("id")
+    const isMyCollection = params.get("type") == "mycolection"
 
     const toggleFullScreen = () => {
         document.getElementById("image").requestFullscreen();
@@ -20,7 +21,18 @@ const ViewVr: React.FC<Nft> = (Nft) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            setNft(await getCategoryData(categoryId))
+            let detailData;
+
+            if (isMyCollection) {
+                // this id is tokenId
+                let categoryId = await getCategoryIdFromNftId(id)
+                detailData = await getCategoryData(categoryId);
+
+            } else {
+                // this id is categoryId
+                detailData = await getCategoryData(id);
+            }
+            setNft(detailData)
         }
         fetchData()
     }, [])
