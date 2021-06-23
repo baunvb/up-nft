@@ -143,21 +143,50 @@
     font-size: 18px;
     font-weight: 500;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 .detail-dialog-tx-address {
     cursor: pointer;
     display: block;
     color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     text-align: center;
+    cursor: pointer;
 }
 .detail-dialog-tx-address > span {
     margin-left: 6px;
 }
 .error-text {
     color: #8F929A;
+}
+.detail-dialog-status {
+    text-align: center;
+    margin-left: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #8F929A;
+}
+.detail-dialog-status > span {
+    display: block;
+    margin-left: 4px;
+}
+.detail-nft-info-label {
+    color: #8F929A;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    display: block;
+    margin-top: 12px;
+}
+.detail-nft-info-value {
+    color: #fff;
+    font-size: 12px;
+    line-height: 18px;
+    display: block;
+    margin-right: 2px;
 }
 @media only screen 
   and (min-device-width: 320px) 

@@ -46,3 +46,7 @@ export const NETWORK = {
 		scanUrl: "https://testnet.bscscan.com/"
 	}
 }
+export const CONTRACTS_ADDRESS = {
+    BNB: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+    UP_NFT: "0xd3c278ea1c9756434ca9AEFd9D74C6c861C10f0a"
+}

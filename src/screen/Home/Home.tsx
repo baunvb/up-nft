@@ -22,7 +22,7 @@ const Home: React.FC<{}> = () => {
 
     return (
         <div className="home">
-            <span className="home-title">NFT Market Place</span>
+            <span className="home-title">NFT Marketplace</span>
             <MarketPlace />
         </div>
     )

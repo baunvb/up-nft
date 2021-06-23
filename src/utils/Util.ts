@@ -123,11 +123,28 @@ export const getCategoryData = async (id: any) => {
 
 }
 
-export const mintArtByCategoryId = async (id: any, options: any, callback: any) => {
+export const mintArtByCategoryId = async (id: any, options: any, onTransactionHash: any, onConfirmation: any, onError: any) => {
+    let isConfirmed = false;
     await Contracts.UP_NFT.methods.mintArtByCategoryId(id).
-        send({ from: getSelectedAddress(), gas: options.gas, value: web3.utils.toWei(options.value, "ether") }, function (err: any, tx: string) {
-            callback(err, tx)
+        send({ from: getSelectedAddress(), gas: options.gas, value: web3.utils.toWei(options.value, "ether") })
+        .on('transactionHash', function(hash: string){
+            console.log("on transactionHash", hash)
+            onTransactionHash(hash)
         })
+        .on('receipt', function(receipt: any){
+            console.log("on receipt", receipt)
+        })
+        .on('confirmation', function(confirmationNumber: number, receipt: any){ 
+            console.log("on confirmation", confirmationNumber, receipt)
+            isConfirmed = true
+            onConfirmation(confirmationNumber, receipt)
+
+         })
+        .on('error', function(error: any) {
+            if(!isConfirmed) {
+                onError(error)
+            }
+        });
 
 }
 
