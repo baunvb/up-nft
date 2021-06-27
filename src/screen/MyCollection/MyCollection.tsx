@@ -9,12 +9,17 @@ const MyCollection: React.FC<{}> = () => {
     const [listNftOfOwner, setListNft] = useState([])
     const [isLoading, setLoading] = useState(true)
     useEffect(() => {
-        const fetchNextNftItems = async () => {
-            var listNftOfOwner = await getListNftOfOwner(getSelectedAddress())
-            setListNft(listNftOfOwner)
-            setLoading(false)
+        const fetchMyCollections = async () => {
+            let myAddress = getSelectedAddress()
+            if (!myAddress) {
+                window.location.href = "/"
+            } else {
+                let listNftOfOwner = await getListNftOfOwner(getSelectedAddress())
+                setListNft(listNftOfOwner)
+                setLoading(false)
+            }
         }
-        fetchNextNftItems()
+        fetchMyCollections()
     }, [])
     if (isLoading) {
         return <div style={{ width: "100%", height: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>

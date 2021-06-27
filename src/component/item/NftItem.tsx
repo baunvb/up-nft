@@ -22,10 +22,18 @@ const NftItem: React.FC<Nft> = (ItemProps) => {
         </div>
         <span className="nft-item-name">{ItemProps.name}</span>
         <div className="nft-item-info">
-          <span>
-            <span>Owner</span>
-            <span>{ItemProps.isSale ? formatShortWalletAddress(ItemProps.owner || "") : "N/A"}</span>
-          </span>
+          {
+            ItemProps.type == "collection" ?
+              <span>
+                <span>Owner</span>
+                <span>{formatShortWalletAddress(ItemProps.owner)}</span>
+              </span> :
+
+              <span>
+                <span>Avaiable</span>
+                <span>{`${(ItemProps.max - ItemProps.amount)}/${ItemProps.max}`} NFT</span>
+              </span>
+          }
           <span>
             <span>Price</span>
             <span>{ItemProps.isSale ? `${ItemProps.price} BNB` : "N/A"}</span>

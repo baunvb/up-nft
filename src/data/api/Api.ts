@@ -43,7 +43,13 @@ export const initWeb3 = () => {
 }
 
 export const getSelectedAddress = () => {
-    return window.ethereum.selectedAddress
+    let myAddress = window.ethereum.selectedAddress
+    console.log("myAddress", myAddress)
+    //foce reload page
+    if (myAddress === null) {
+        
+    }
+    return myAddress
 }
 
 export const listenChainChanged = (ethereum: any) => {

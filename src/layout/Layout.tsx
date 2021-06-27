@@ -50,7 +50,7 @@ export default function Layout(props: any) {
         />
       </div> */}
       <div className="layout-content">
-        <span className="layout-sibar-icon-menu"
+        {/* <span className="layout-sibar-icon-menu"
           onClick={() => setOpen(e => !e)}
         >
           {
@@ -58,7 +58,7 @@ export default function Layout(props: any) {
               <FaTimes size={30} /> :
               <FaBars size={30} />
           }
-        </span>
+        </span> */}
         <Header />
         <div>
           {

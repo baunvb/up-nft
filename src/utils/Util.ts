@@ -25,8 +25,8 @@ export function unit256ToNumber(value: number, decimal = 18, fixNumber = 5): num
     return Number(new BigNumber(value).div(new BigNumber(10).pow(decimal)).toFixed(fixNumber))
 }
 
-export const formatShortWalletAddress = (address: string): string => {
-    return address.substr(0, 6) + '...' + address.substr(address.length - 4, address.length);
+export const formatShortWalletAddress = (address: string, length = 4): string => {
+    return address.substr(0, 6) + '...' + address.substr(address.length - length, address.length);
 
 }
 
@@ -170,7 +170,9 @@ export const getNextReleaseItem = async () => {
         return {
             name: row.name,
             date: row.date,
-            isSale: false
+            isSale: false,
+            max: row.max,
+            amount: 0
         }
     })
 

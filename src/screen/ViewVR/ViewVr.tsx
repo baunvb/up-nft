@@ -6,7 +6,7 @@ import { FaInstagram, FaFacebook } from 'react-icons/fa';
 import { useHistory } from 'react-router';
 import { getCategoryData, getCategoryIdFromNftId } from '../../utils/Util';
 
-const ViewVr: React.FC<Nft> = (Nft) => {
+const ViewVr: React.FC<{}> = () => {
     const history = useHistory()
     const [nft, setNft] = useState<Nft>(null)
 
